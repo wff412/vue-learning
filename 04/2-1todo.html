@@ -1,0 +1,77 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 0.先引入vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!--界面-->
+    <div id="app">
+        <h1>待办事项列表</h1>
+        <div>
+            <input type="text"><button>+</button>
+        </div>
+        <ul>
+            <li>1-吃饭<button>-</button></li>
+            <li>2-睡觉<button>-</button></li>
+            <li>3-吃饭<button>-</button></li>
+            <li>4-打亮亮<button>-</button></li>
+        </ul>
+    </div>
+
+    <script>
+        //定义组件todo-add
+        var todoAdd = {
+            template: `<div>
+                    <h1>待办事项列表</h1>
+        <div>
+            <input type="text"><button>+</button>
+        </div>
+                </div>`,
+
+        }
+
+        //定义组件todo，并注册，这种注册时全局注册
+        Vue.component("todo", {
+            template: `<div>
+                <todo-add></todo-add>
+                    <h1>待办事项列表</h1>
+        <div>
+            <input type="text"><button>+</button>
+        </div>
+        <ul>
+            <li>1-吃饭<button>-</button></li>
+            <li>2-睡觉<button>-</button></li>
+            <li>3-吃饭<button>-</button></li>
+            <li>4-打亮亮<button>-</button></li>
+        </ul>
+                </div>`,
+
+                //注册组件，时局部注册
+                components:{
+                    todoAdd,
+                    //todo-add
+                }
+
+        })
+
+        var vm = new Vue({
+            //界面
+            el: "#app",
+            //数据
+            data: {
+
+            },
+
+            //方法
+            methods: {
+
+            }
+        })
+    </script>
+</body>

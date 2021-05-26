@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 引入 vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <todo></todo>
+    </div>
+
+    <script>
+        //定义组件todo-add
+        var todoAdd = {
+            template: `<div>
+                <input type="text" v-model="item" ref="input"> <button @click="add">+</button>
+            </div>`,
+            data(){
+               return{
+                  item:"",
+               }
+            },
+            methods:{
+                add(){
+                    //this.$emit("myadd",this.item);
+                    //this.myadd(this.item);
+                    this.$parent.$refs.todoList.add_item(this.item);
+                    //console.log(this.$refs.input); 
+                }
+            },
+            props: ["myadd"],
+        }
+
+        //定义todo-item
+        var todoItem = {
+            template: `<li> {{1+myi}}-{{mytask}} <button @click="del">x</button>  </li>`,
+            props: ["mytask", "myi","mydel"],
+            methods:{
+               del(){
+                   this.mydel(this.myi);
+               }
+            },
+        }
+
+        //定义组件todo-list
+        var todoList = {
+            template: `<div>
+               <ul v-for="(task,i) of tasks" :key="i">
+                  <todo-item :mytask="task" :myi="i" :mydel="del_item"></todo-item>
+               </ul>
+             </div>`,
+            components: {
+                "todo-item": todoItem,
+            },
+
+            data() {
+                return {
+                    tasks: ["吃饭", "睡觉", "学习", "打游戏"],
+                }
+            },
+            methods:{
+                add_item(str){
+                    this.tasks.push(str);
+                },
+                del_item(i){
+                this.tasks.splice(i,1);
+                }
+            },
+        }
+
+        //定义组件todo  并注册，这种注册时全局注册
+        Vue.component("todo", {
+            template: ` <div>
+            <h1>待办事项列表</h1>
+                <todo-add></todo-add>
+                <todo-list ref="todoList"> </todo-list>
+            </div>`,
+
+            //注册新组件， 时局部注册
+            components: {
+                todoAdd, //会自动转化为 todo-add
+                todoList,
+            },
+        });
+
+
+        var vm = new Vue({
+            //界面
+            el: "#app",
+            //数据
+            data: {
+
+            },
+            //方法
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+   <!-- 0.先引入vue.js -->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
+  </head>
+  <body>
+    <div id="app">
+      <todo></todo>
+    </div>
+    <script>
+     
+      //定义子组件
+      var todoAdd = {
+        template: `
+          <div>
+            <input type="text" v-model="item"/>
+            <button @click="add_item">+</button>
+          </div>`,
+        data() {
+          return { item: "" };
+        },
+        methods: {
+          add_item() {
+            this.bus.$emit("add_item", this.item); //触发兄弟组件在事件bus中注册的自定义事件add_item
+            this.item="";
+          },
+        },
+      };
+
+      //定义子组件（其实是孙组件了）
+      var todoItem = {
+        template: `<li>
+          
+          {{i+1}} - {{task}} <button @click="del">x</button>
+        </li>`,
+       
+        props: ["task", "i"],
+        methods: {
+          del() {
+            this.$emit("del_item", this.i); 
+          },
+        },
+      };
+
+      //定义子组件
+      var todoList = {
+        template: `<ul>
+         
+          <todo-item v-for="(task,i) of tasks" :task="task" :i="i" :key="i" @del_item="del"></todo-item>
+        </ul>`,
+        data() {
+          return {
+            tasks: ["吃饭", "睡觉", "打亮亮", "学习"], //待办事项数组放在子组件todoList里
+          };
+        },
+        components: {
+          todoItem,
+        },
+        methods: {
+          del: function (i) {
+            this.tasks.splice(i, 1);
+          },
+          add(str) {
+            this.tasks.push(str);
+          },
+        },
+        created() {
+          this.bus.$on("add_item", this.add.bind(this)); //在事件bus里注册自定义事件add_item
+        },
+      };
+
+      //定义父组件，全局注册
+      Vue.component("todo", {
+        template: `<div>
+          <h1>待办事项列表</h1>
+          <todo-add></todo-add>
+          <todo-list></todo-list>
+        </div>`,
+
+        components: {
+          todoAdd,
+          todoList,
+         
+        }, 
+      });
+
+      var bus = new Vue({});//定义事件bus
+      Vue.prototype.bus = bus;
+      var vm = new Vue({
+        el: "#app",
+        data: {},
+      });
+    </script>
+  </body>
+</html>

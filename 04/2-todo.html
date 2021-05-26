@@ -1,0 +1,110 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+<!-- 0.先引入vue.js -->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>  
+</head>
+<body>
+    <!--界面-->
+    <div id="app">
+        <todo></todo>
+    </div>
+
+    <script>
+        var todoItem = {
+            template: `<li>
+                 1 -  {{task}}
+                </li>`,
+            data() {
+                return {
+                    task: "吃饭",
+                }
+            }
+        }
+
+        var todoAdd = {
+            template: `<div>                
+                    <input type="text" v-model="item"/>
+                    <button @click = "add_item"> + </button>
+                </div>`,
+            data() {
+                return {
+                    item: "",
+                }
+            },
+            methods: {
+                add_item() {
+                    //待完善
+                    console.log("增加事项，待实现....")
+                }
+            }
+        }
+
+        var todoList = {
+            template: `<ul>
+                    <todo-item  v-for="(task,i) of tasks" ></todo-item>
+                </ul>`,
+            data() {
+                return {
+                    tasks: ["吃饭", "睡觉", "学习", "打亮亮"],
+                }
+            },
+
+            methods: {
+
+            },
+            components: {
+                todoItem
+            },
+
+        }
+
+
+
+
+        //把数据放在todo组件  父组件todo
+        Vue.component("todo", {
+            template: `<div>
+                    <h1>待办事项列表</h1>
+                    <todo-add></todo-add>
+                    <todo-list></todo-list>
+                </div>`,
+
+            data() {
+                return {
+                    tasks: ["吃饭", "睡觉", "学习", "打亮亮"],
+                }
+            },
+
+            components: {
+                todoAdd, todoList
+            }
+
+
+
+
+        })
+
+
+
+
+
+
+        var vm = new Vue({
+            //界面
+            el: "#app",
+            //数据
+            data: {
+
+            },
+
+            //方法
+            methods: {
+
+            }
+        })
+    </script>
+</body>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- 0.先引入vue.js -->
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <style>
+        .alert {
+          width: 300px;
+          height: 100px;
+          margin-left: 160px;
+          background-color: aqua;
+        }
+      </style>
+    </head>
+    <body>
+      <div id="app2">
+        <!--希望单击按钮时，让对话框显示-->
+        <button @click="showIt">显示对话框</button>
+        <div v-show="show" class="alert">
+          <!--希望点击X时，对话框关闭-->
+          <span @click="closeIt">X</span>
+          您的浏览器版本太低，请升级！
+        </div>
+      </div>
+      <script>
+        var vm = new Vue({
+          el: "#app2",
+          data: {
+            //本例中：因为页面上需要一个bool类型的变量show，控制对话框的显示/隐藏
+            show: false,
+          },
+          methods: {
+            //showIt:function(){
+            showIt() {
+              //本例中调用showIt为了让对话框显示
+              this.show = true;
+            },
+  
+            closeIt() {
+              this.show = false;
+            },
+          },
+        });
+      </script>
+    </body>
+  </html>
+  
